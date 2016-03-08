@@ -1,44 +1,50 @@
 package telanx.cooee.recyclerviewsample.itemdecoration;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 /**
- * ±íÏî·Ö¸îÆ÷(Ö±Ïß)
+ * è¡¨é¡¹åˆ†å‰²å™¨(ç›´çº¿)
  */
 public class Line extends RecyclerView.ItemDecoration
 {
+    private final int[] ATTRS = {android.R.attr.listDivider};
     /**
-     * Ïß¸ß¶È
+     * çº¿å·¦è¾¹è·
      */
-    private int strokeWidth;
+    private int marginLeft;
     /**
-     * ÏßÑÕÉ«
+     * çº¿å³è¾¹è·
      */
-    private int color;
+    private int marginRight;
     /**
-     * Ïß×ó±ß¾à
+     * çº¿å›¾ç‰‡
      */
-    private int marginLeft ;
-    /**
-     * ÏßÓÒ±ß¾à
-     */
-    private int marginRight ;
-    private Paint paint ;
+    private Drawable divider;
+    private Paint paint;
 
-    public Line(int strokeWidth , int color){
-        this.strokeWidth = strokeWidth ;
-        this.color = color ;
-
+    public Line(int strokeWidth,
+                int color)
+    {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(color);
         paint.setStrokeWidth(strokeWidth);
+    }
+
+    public Line(Context context)
+    {
+        final TypedArray a = context.obtainStyledAttributes(ATTRS);
+        divider = a.getDrawable(0);
+        a.recycle();
     }
 
     public int getMarginLeft()
@@ -49,7 +55,7 @@ public class Line extends RecyclerView.ItemDecoration
     public Line setMarginLeft(int marginLeft)
     {
         this.marginLeft = marginLeft;
-        return this ;
+        return this;
     }
 
     public int getMarginRight()
@@ -60,7 +66,7 @@ public class Line extends RecyclerView.ItemDecoration
     public Line setMarginRight(int marginRight)
     {
         this.marginRight = marginRight;
-        return this ;
+        return this;
     }
 
     @Override
@@ -69,16 +75,29 @@ public class Line extends RecyclerView.ItemDecoration
                        RecyclerView.State state)
     {
         super.onDraw(c, parent, state);
-        final int startX = parent.getPaddingLeft()+marginLeft;
-        final int endX = parent.getWidth() - parent.getPaddingRight()-marginRight;
 
-        //±éÀúËùÓĞ¿É¼ûº¢×Ó»æÖÆµÄ·Ö¸îÏß
-        final int childCount = parent.getChildCount() ;
-        for (int i = 0 ; i <childCount ; i++){
-            View child = parent.getChildAt(i) ;
+        final int left = parent.getPaddingLeft() + marginLeft;
+        final int right = parent.getWidth() - parent.getPaddingRight() - marginRight;
+
+        //éå†æ‰€æœ‰å¯è§å­©å­ç»˜åˆ¶å…¶åˆ†å‰²çº¿
+        final int childCount = parent.getChildCount();
+        for (int i = 0; i < childCount; i++)
+        {
+            View child = parent.getChildAt(i);
             RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int startY = child.getBottom() + layoutParams.bottomMargin ;
-            c.drawLine(startX , startY , endX , startY , paint);
+            final int top = child.getBottom() + layoutParams.bottomMargin;
+            //ç”¨Paintç»˜åˆ¶
+            if (divider == null)
+            {
+                c.drawLine(left, top, right, top, paint);
+            }
+            //ç”¨drawableç»˜åˆ¶
+            else
+            {
+                final int bottom = top + divider.getIntrinsicHeight();
+                divider.setBounds(left, top, right, bottom);
+                divider.draw(c);
+            }
         }
     }
 

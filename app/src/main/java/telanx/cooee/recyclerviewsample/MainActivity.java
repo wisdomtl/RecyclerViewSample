@@ -15,10 +15,10 @@ import telanx.cooee.recyclerviewsample.itemdecoration.Line;
 public class MainActivity extends ActionBarActivity
 {
 
-    private RecyclerView recyclerView ;
+    private RecyclerView recyclerView;
     private ArrayList<String> datas;
-    private RecyclerView.LayoutManager layoutManager ;
-    private RecyclerView.Adapter adapter ;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
     private ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     
     @Override
@@ -27,24 +27,28 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init() ;
-
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        int itemDecorationNum = itemDecorations.size() ;
-        for (int i = 0 ; i < itemDecorationNum ; i++){
-            recyclerView.addItemDecoration(itemDecorations.get(i));
-        }
+        init();
     }
 
     private void init()
     {
         initData();
 
-        layoutManager = new LinearLayoutManager(this) ;
-        adapter = new StringAdapter(this , datas) ;
-        itemDecorations.add(new Line(4 , Color.BLUE).setMarginLeft(10).setMarginRight(10)) ;
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new StringAdapter(this, datas);
+        //用Paint绘制表项分割线
+//        itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
+//                                                   .setMarginRight(10));
+        //用Drawable绘制表项分割线
+        itemDecorations.add(new Line(this)) ;
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        int itemDecorationNum = itemDecorations.size();
+        for (int i = 0; i < itemDecorationNum; i++)
+        {
+            recyclerView.addItemDecoration(itemDecorations.get(i));
+        }
     }
 
 
