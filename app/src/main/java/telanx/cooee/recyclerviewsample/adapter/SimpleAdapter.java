@@ -12,14 +12,15 @@ import java.util.ArrayList;
 import telanx.cooee.recyclerviewsample.R;
 
 /**
- * ×Ö·û´®ÊÊÅäÆ÷
+ * RecyclerViewé€‚é…å™¨åŸºæœ¬ç”¨æ³•
  */
-public class StringAdapter extends RecyclerView.Adapter<StringAdapter.StringViewHolder>
+public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.StringViewHolder>
 {
     private Context context ;
     private ArrayList<String> datas ;
 
-    public StringAdapter(Context context ,ArrayList<String> datas){
+    public SimpleAdapter(Context context,
+                         ArrayList<String> datas){
         this.context = context ;
         this.datas = datas ;
     }
@@ -28,8 +29,9 @@ public class StringAdapter extends RecyclerView.Adapter<StringAdapter.StringView
     public StringViewHolder onCreateViewHolder(ViewGroup viewGroup,
                                                int i)
     {
-        //±ÜÃâ±íÏî¶àÒ»²ãÇ¶Ì×
-        View itemView = LayoutInflater.from(context).inflate(R.layout.string_item,null) ;
+        //é¿å…è¡¨é¡¹å¤šä¸€å±‚åµŒå¥—
+        View itemView = LayoutInflater.from(context)
+                                      .inflate(R.layout.string_item, viewGroup, false);
         return new StringViewHolder(itemView);
     }
 
@@ -43,7 +45,7 @@ public class StringAdapter extends RecyclerView.Adapter<StringAdapter.StringView
     @Override
     public int getItemCount()
     {
-        return datas.size();
+        return datas != null ?datas.size() : 0;
     }
 
     public class StringViewHolder extends RecyclerView.ViewHolder{
