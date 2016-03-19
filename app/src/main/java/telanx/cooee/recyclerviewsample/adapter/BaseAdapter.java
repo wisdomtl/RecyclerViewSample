@@ -23,7 +23,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         this.datas = datas ;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener)
+    public void setOnItemClickListener(OnItemClickListener<T> onItemClickListener)
     {
         this.onItemClickListener = onItemClickListener;
     }
@@ -52,17 +52,23 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
     public interface OnItemClickListener<T>
     {
         void onItemClick(T data);
+
+        void onItemLongClick(List<T> datas,
+                             int position,
+                             BaseAdapter adapter);
     }
 
     /**
      * 带有表项点击监听的ViewHolder
      */
-    public class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
+    {
 
         public BaseViewHolder(View itemView)
         {
             super(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -72,6 +78,18 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
                 int position = getAdapterPosition() ;
                 onItemClickListener.onItemClick(datas.get(position));
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v)
+        {
+            if (onItemClickListener != null)
+            {
+                int position = getAdapterPosition();
+                onItemClickListener.onItemLongClick(datas, position, BaseAdapter.this);
+                return true;
+            }
+            return false;
         }
     }
 }
