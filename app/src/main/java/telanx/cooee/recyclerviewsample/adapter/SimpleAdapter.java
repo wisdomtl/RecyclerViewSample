@@ -10,11 +10,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import telanx.cooee.recyclerviewsample.R;
+import telanx.cooee.recyclerviewsample.viewholder.StringViewHolder;
 
 /**
- * RecyclerView适配器基本用法
+ * RecyclerView适配器最简单用法
  */
-public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.StringViewHolder>
+public class SimpleAdapter extends RecyclerView.Adapter<StringViewHolder>
 {
     private Context context ;
     private ArrayList<String> datas ;
@@ -46,16 +47,5 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.StringView
     public int getItemCount()
     {
         return datas != null ?datas.size() : 0;
-    }
-
-    public class StringViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView textView ;
-
-        public StringViewHolder(View itemView)
-        {
-            super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.tv_StringItem);
-        }
     }
 }

@@ -28,6 +28,41 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         this.onItemClickListener = onItemClickListener;
     }
 
+    /**
+     * 添加数据
+     *
+     * @param data 单个数据
+     */
+    public void addData(T data)
+    {
+        datas.add(data);
+        notifyItemInserted(datas.size() - 1);
+    }
+
+    /**
+     * 添加数据到指定位置
+     *
+     * @param data     数据
+     * @param position 指定位置
+     */
+    public void addDataAt(T data,
+                          int position)
+    {
+        datas.add(position, data);
+        notifyItemInserted(position);
+    }
+
+    /**
+     * 删除单个数据
+     *
+     * @param position 数据索引
+     */
+    public void removeData(int position)
+    {
+        datas.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onBindViewHolder(VH holder,
                                  int position)
@@ -53,8 +88,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
     {
         void onItemClick(T data);
 
-        void onItemLongClick(List<T> datas,
-                             int position,
+        void onItemLongClick(int position,
                              BaseAdapter adapter);
     }
 
@@ -86,7 +120,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
             if (onItemClickListener != null)
             {
                 int position = getAdapterPosition();
-                onItemClickListener.onItemLongClick(datas, position, BaseAdapter.this);
+                onItemClickListener.onItemLongClick(position, BaseAdapter.this);
                 return true;
             }
             return false;

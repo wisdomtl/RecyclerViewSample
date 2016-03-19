@@ -9,11 +9,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import telanx.cooee.recyclerviewsample.R;
+import telanx.cooee.recyclerviewsample.viewholder.StringViewHolder;
 
 /**
  * BaseAdapter的一种实现
  */
-public class AlphabetAdapter extends BaseAdapter<String, AlphabetAdapter.StringViewHolder>
+public class AlphabetAdapter extends BaseAdapter<String, StringViewHolder>
 {
     private Context context;
 
@@ -38,18 +39,7 @@ public class AlphabetAdapter extends BaseAdapter<String, AlphabetAdapter.StringV
     public void bindData(StringViewHolder holder,
                          String data)
     {
-        holder.tvAlphabet.setText(data);
-    }
-
-    public class StringViewHolder extends BaseAdapter.BaseViewHolder
-    {
-        public TextView tvAlphabet;
-
-        public StringViewHolder(View itemView)
-        {
-            super(itemView);
-            tvAlphabet = (TextView) itemView.findViewById(R.id.tv_StringItem);
-        }
+        holder.textView.setText(data);
     }
 }
 
