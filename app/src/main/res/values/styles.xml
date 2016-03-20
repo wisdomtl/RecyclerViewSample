@@ -6,4 +6,9 @@
         <item name="android:listDivider">@drawable/dashed_shape</item>
     </style>
 
+    <!-- android:colorControlHighlight这个属性用于指定选中高亮颜色 只有通过这样然后指定给控件的theme才能生效-->
+    <style name="CustomRippleColor">
+        <item name="android:colorControlHighlight">#00FF00</item>
+    </style>
+
 </resources>

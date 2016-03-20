@@ -50,23 +50,23 @@ public class MainActivity extends ActionBarActivity
 //        recyclerViewSample1.drawDecoration(itemDecorations);
 
         /**RecyclerView用法2:为表项设置监听器*/
-//        InitRecyclerViewWithItemClickListener recyclerViewSample2 = new InitRecyclerViewWithItemClickListener(recyclerView);
-//        recyclerViewSample2.setAdapter();
-//        recyclerViewSample2.setLayoutManager();
+        InitRecyclerViewWithItemClickListener recyclerViewSample2 = new InitRecyclerViewWithItemClickListener(recyclerView);
+        recyclerViewSample2.setAdapter();
+        recyclerViewSample2.setLayoutManager();
         //用Paint绘制表项分割线
-//        itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
-//                                                   .setMarginRight(10));
-//        recyclerViewSample2.drawDecoration(itemDecorations);
-
-        /**RecyclerView用法3:监听RecyclerView滚动状态并设置滚动监听*/
-        InitRecyclerViewWByScrollListener recyclerViewSample3 = new InitRecyclerViewWByScrollListener(recyclerView);
-        recyclerViewSample3.setAdapter();
-        recyclerViewSample3.setLayoutManager();
-//        //用Paint绘制表项分割线
         itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
                                                    .setMarginRight(10));
-        recyclerViewSample3.drawDecoration(itemDecorations);
-        recyclerViewSample3.setListeners();
+        recyclerViewSample2.drawDecoration(itemDecorations);
+
+        /**RecyclerView用法3:监听RecyclerView滚动状态并设置滚动监听*/
+//        InitRecyclerViewWByScrollListener recyclerViewSample3 = new InitRecyclerViewWByScrollListener(recyclerView);
+//        recyclerViewSample3.setAdapter();
+//        recyclerViewSample3.setLayoutManager();
+//        //用Paint绘制表项分割线
+//        itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
+//                                                   .setMarginRight(10));
+//        recyclerViewSample3.drawDecoration(itemDecorations);
+//        recyclerViewSample3.setListeners();
     }
 
     protected void initData()
