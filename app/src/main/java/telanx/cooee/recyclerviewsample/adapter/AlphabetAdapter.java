@@ -10,18 +10,17 @@ import java.util.List;
 
 import telanx.cooee.recyclerviewsample.R;
 
+
 /**
  * BaseAdapter的一种实现
  */
 public class AlphabetAdapter extends BaseAdapter<String, AlphabetAdapter.StringViewHolder>
 {
-    private Context context;
 
     public AlphabetAdapter(Context context,
                            List<String> datas)
     {
-        super(datas);
-        this.context = context;
+        super(context, datas);
     }
 
     @Override
@@ -30,15 +29,22 @@ public class AlphabetAdapter extends BaseAdapter<String, AlphabetAdapter.StringV
     {
         //避免表项多一层嵌套
         View itemView = LayoutInflater.from(context)
-                                      .inflate(R.layout.string_item , parent , false);
+                                      .inflate(R.layout.string_item, null);
         return new StringViewHolder(itemView);
     }
 
+
     @Override
-    public void bindData(StringViewHolder holder,
-                         String data)
+    protected void bindData(StringViewHolder holder,
+                            int position,
+                            List<Object> payLoads)
     {
-        holder.tvAlphabet.setText(data);
+        if (payLoads == null || payLoads.size() == 0)
+        {
+            holder.tvAlphabet.setText(getDatas().get(position));
+            return;
+        }
+
     }
 
     public class StringViewHolder extends BaseAdapter.BaseViewHolder

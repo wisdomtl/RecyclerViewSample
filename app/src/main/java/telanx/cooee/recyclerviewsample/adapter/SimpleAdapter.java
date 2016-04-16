@@ -32,7 +32,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<StringViewHolder>
     {
         //避免表项多一层嵌套
         View itemView = LayoutInflater.from(context)
-                                      .inflate(R.layout.string_item, viewGroup, false);
+                                      .inflate(R.layout.string_item, null);
         return new StringViewHolder(itemView);
     }
 

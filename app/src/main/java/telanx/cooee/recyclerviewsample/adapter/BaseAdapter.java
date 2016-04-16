@@ -1,5 +1,6 @@
 package telanx.cooee.recyclerviewsample.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -14,13 +15,17 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
      * 数据集
      */
     private List<T> datas;
+    protected Context context;
     /**
      * 表项点击监听器
      */
-    private OnItemClickListener<T> onItemClickListener ;
+    private OnItemClickListener<T> onItemClickListener;
 
-    public BaseAdapter(List<T> datas){
-        this.datas = datas ;
+    public BaseAdapter(Context context,
+                       List<T> datas)
+    {
+        this.context = context;
+        this.datas = datas;
     }
 
     public void setOnItemClickListener(OnItemClickListener<T> onItemClickListener)
@@ -67,7 +72,14 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
     public void onBindViewHolder(VH holder,
                                  int position)
     {
-        bindData(holder, datas.get(position));
+    }
+
+    @Override
+    public void onBindViewHolder(VH holder,
+                                 int position,
+                                 List<Object> payloads)
+    {
+        bindData(holder, position, payloads);
     }
 
     @Override
@@ -76,8 +88,15 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         return datas != null ? datas.size() : 0;
     }
 
-    public abstract void bindData(VH holder,
-                                  T data);
+
+    protected abstract void bindData(VH holder,
+                                     int position,
+                                     List<Object> payLoads);
+
+    protected List<T> getDatas()
+    {
+        return this.datas;
+    }
 
     /**
      * 表项点击监听器
@@ -108,8 +127,9 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
         @Override
         public void onClick(View v)
         {
-            if (onItemClickListener != null){
-                int position = getAdapterPosition() ;
+            if (onItemClickListener != null)
+            {
+                int position = getAdapterPosition();
                 onItemClickListener.onItemClick(datas.get(position));
             }
         }

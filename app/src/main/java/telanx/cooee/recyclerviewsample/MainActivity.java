@@ -1,32 +1,39 @@
 package telanx.cooee.recyclerviewsample;
 
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import telanx.cooee.recyclerviewsample.adapter.BaseAdapter;
 import telanx.cooee.recyclerviewsample.adapter.AlphabetAdapter;
+import telanx.cooee.recyclerviewsample.adapter.BaseAdapter;
+import telanx.cooee.recyclerviewsample.adapter.PartRefreshAdapter;
 import telanx.cooee.recyclerviewsample.adapter.SimpleAdapter;
+import telanx.cooee.recyclerviewsample.entity.News;
 import telanx.cooee.recyclerviewsample.itemdecoration.Line;
-import telanx.cooee.recyclerviewsample.viewholder.StringViewHolder;
 
 import static android.util.Log.e;
-import static android.util.Log.w;
 
 
 public class MainActivity extends ActionBarActivity
 {
+    private static final int MESSAGE_REFRESH_TIME = 1;
     private ArrayList<String> datas;
+    private List<News> newsList;
     private ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
+    private ScheduledExecutorService executor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +46,8 @@ public class MainActivity extends ActionBarActivity
     private void init()
     {
         initData();
+        executor = Executors.newSingleThreadScheduledExecutor();
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv);
 
         /**RecyclerView用法1:最简单的用法*/
@@ -50,13 +59,13 @@ public class MainActivity extends ActionBarActivity
 //        recyclerViewSample1.drawDecoration(itemDecorations);
 
         /**RecyclerView用法2:为表项设置监听器*/
-        InitRecyclerViewWithItemClickListener recyclerViewSample2 = new InitRecyclerViewWithItemClickListener(recyclerView);
-        recyclerViewSample2.setAdapter();
-        recyclerViewSample2.setLayoutManager();
-        //用Paint绘制表项分割线
-        itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
-                                                   .setMarginRight(10));
-        recyclerViewSample2.drawDecoration(itemDecorations);
+//        InitRecyclerViewWithItemClickListener recyclerViewSample2 = new InitRecyclerViewWithItemClickListener(recyclerView);
+//        recyclerViewSample2.setAdapter();
+//        recyclerViewSample2.setLayoutManager();
+//        //用Paint绘制表项分割线
+//        itemDecorations.add(new Line(4, Color.BLUE).setMarginLeft(10)
+//                                                   .setMarginRight(10));
+//        recyclerViewSample2.drawDecoration(itemDecorations);
 
         /**RecyclerView用法3:监听RecyclerView滚动状态并设置滚动监听*/
 //        InitRecyclerViewWByScrollListener recyclerViewSample3 = new InitRecyclerViewWByScrollListener(recyclerView);
@@ -67,6 +76,11 @@ public class MainActivity extends ActionBarActivity
 //                                                   .setMarginRight(10));
 //        recyclerViewSample3.drawDecoration(itemDecorations);
 //        recyclerViewSample3.setListeners();
+
+        /**RecyclerView用法4:局部刷新表项*/
+        InitRecyclerViewWithPartRefresh recyclerViewSample4 = new InitRecyclerViewWithPartRefresh(recyclerView);
+        recyclerViewSample4.setAdapter();
+        recyclerViewSample4.setLayoutManager();
     }
 
     protected void initData()
@@ -75,6 +89,15 @@ public class MainActivity extends ActionBarActivity
         for (int i = 'A'; i < 'z'; i++)
         {
             datas.add("" + (char) i);
+        }
+
+        newsList = new ArrayList<>();
+        for (int i = 0; i < 20; i++)
+        {
+            News news = new News();
+            news.setTime(i + "点");
+            news.setTitle("新闻" + i);
+            newsList.add(news);
         }
     }
 
@@ -181,8 +204,6 @@ public class MainActivity extends ActionBarActivity
      */
     private class InitRecyclerViewWByScrollListener extends InitRecyclerView
     {
-
-
         public InitRecyclerViewWByScrollListener(RecyclerView recyclerView)
         {
             super(recyclerView);
@@ -226,6 +247,20 @@ public class MainActivity extends ActionBarActivity
                 {
                 }
             });
+
+            recyclerView.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener()
+            {
+                @Override
+                public void onChildViewAttachedToWindow(View view)
+                {
+                }
+
+                @Override
+                public void onChildViewDetachedFromWindow(View view)
+                {
+                }
+            });
+
         }
 
         /**
@@ -233,6 +268,7 @@ public class MainActivity extends ActionBarActivity
          */
         private abstract class OnScrollStateListener extends RecyclerView.OnScrollListener
         {
+
             /**
              * 是否正在向左滚动
              */
@@ -312,6 +348,64 @@ public class MainActivity extends ActionBarActivity
             void onLeftmost()
             {
 
+            }
+
+        }
+    }
+
+    /**
+     * RecyclerView用法4:局部刷新RecyclerView表现
+     */
+    private class InitRecyclerViewWithPartRefresh extends InitRecyclerView
+    {
+        private Handler refreshHandler = new RefreshHandler();
+        private PartRefreshAdapter adapter;
+
+        public InitRecyclerViewWithPartRefresh(RecyclerView recyclerView)
+        {
+            super(recyclerView);
+            executor.scheduleAtFixedRate(new RefreshTimeRunnable(), 0, PartRefreshAdapter.REFRESH_INTERVAL, TimeUnit.SECONDS);
+        }
+
+
+        @Override
+        void setAdapter()
+        {
+            adapter = new PartRefreshAdapter(MainActivity.this, newsList);
+            recyclerView.setAdapter(adapter);
+        }
+
+        private class RefreshHandler extends Handler
+        {
+            @Override
+            public void handleMessage(Message msg)
+            {
+
+                switch (msg.what)
+                {
+                    case MESSAGE_REFRESH_TIME:
+                        Integer integer = msg.arg1;
+                        adapter.notifyItemRangeChanged(0, newsList.size() - 1, integer);
+                        break;
+                    default:
+                        break;
+                }
+                super.handleMessage(msg);
+            }
+        }
+
+        private class RefreshTimeRunnable implements Runnable
+        {
+            private int count;
+
+            @Override
+            public void run()
+            {
+                Message message = refreshHandler.obtainMessage();
+                message.arg1 = count;
+                message.what = MESSAGE_REFRESH_TIME;
+                count++;
+                refreshHandler.sendMessage(message);
             }
         }
     }
