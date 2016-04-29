@@ -377,7 +377,7 @@ public class MainActivity extends ActionBarActivity {
             adapter = new AlphabetAdapter(MainActivity.this);
             adapter.setEmptyViewLayout(R.layout.empty_view);
             recyclerView.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
+            adapter.notifyDataSetChanged();
         }
 
         public void addDataDelay(int delay) {

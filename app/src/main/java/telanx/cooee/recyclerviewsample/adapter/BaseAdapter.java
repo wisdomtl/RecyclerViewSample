@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import telanx.cooee.recyclerviewsample.R;
+
 /**
  * RecyclerView适配器基类(带表现点击监听器)
  */
@@ -21,7 +23,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      * 数据集
      */
     protected List<T> datas;
-    protected int emptyViewLayout;
+    private int emptyViewLayout;
     private int currentMode ;
     /**
      * 表项点击监听器
@@ -98,6 +100,18 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
     }
 
     @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        int viewType = getItemViewType(position);
+        switch (viewType) {
+            case TYPE_EMPTY_VIEW:
+                break;
+            default:
+                bindHolder(holder , position);
+                break;
+        }
+    }
+
+    @Override
     public final BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         BaseViewHolder viewHolder;
         View itemView;
@@ -130,6 +144,8 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             return getViewType(position);
         }
     }
+
+    protected abstract void bindHolder(BaseViewHolder holder, int position) ;
 
     protected abstract int getCount();
 
@@ -187,27 +203,6 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 //        }
 //    }
 
-    //        @Override
-//        public void onClick(View v)
-//        {
-//            if (onItemClickListener != null){
-//                int position = getAdapterPosition() ;
-//                onItemClickListener.onItemClick(datas.get(position));
-//            }
-//        }
-//
-//        @Override
-//        public boolean onLongClick(View v)
-//        {
-//            if (onItemClickListener != null)
-//            {
-//                int position = getAdapterPosition();
-//                onItemClickListener.onItemLongClick(position, BaseAdapter.this);
-//                return true;
-//            }
-//            return false;
-//        }
-//    }
     private class DataObserver extends RecyclerView.AdapterDataObserver {
         @Override
         public void onChanged() {

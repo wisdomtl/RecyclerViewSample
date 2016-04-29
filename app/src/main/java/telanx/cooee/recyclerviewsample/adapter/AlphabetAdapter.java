@@ -29,7 +29,7 @@ public class AlphabetAdapter extends BaseAdapter<String> {
 
     @Override
     protected void refreshItem(BaseViewHolder holder, int position, List<Object> payloads) {
-        ((StringViewHolder)holder).tvAlphabet.setText(datas.get(position));
+        ((StringViewHolder) holder).tvAlphabet.setText(datas.get(position));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class AlphabetAdapter extends BaseAdapter<String> {
         switch (viewType) {
             case TYPE_ALPHABET:
                 //避免表项多一层嵌套
-                itemView = inflater.inflate(R.layout.string_item, parent,false);
+                itemView = inflater.inflate(R.layout.string_item, parent, false);
                 viewHolder = new StringViewHolder(itemView);
                 break;
             default:
@@ -50,18 +50,9 @@ public class AlphabetAdapter extends BaseAdapter<String> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        int viewType = getItemViewType(position);
-        switch (viewType) {
-            case TYPE_EMPTY_VIEW:
-                break;
-            case TYPE_ALPHABET:
-                String alphabet = datas.get(position);
-                ((StringViewHolder) holder).tvAlphabet.setText(alphabet);
-                break;
-            default:
-                break;
-        }
+    protected void bindHolder(BaseViewHolder holder, int position) {
+        String alphabet = datas.get(position);
+        ((StringViewHolder) holder).tvAlphabet.setText(alphabet);
     }
 
     @Override

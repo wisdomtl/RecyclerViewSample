@@ -24,8 +24,16 @@ public class PartRefreshAdapter extends BaseAdapter<News> {
         super(context, datas);
     }
 
+//    @Override
+//    public void onBindViewHolder(BaseViewHolder holder, int position) {
+//        ((NewsViewHolder)holder).tvTitle.setText(datas.get(position)
+//                .getTitle());
+//        ((NewsViewHolder)holder).tvTime.setText(datas.get(position)
+//                .getTime());
+//    }
+
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    protected void bindHolder(BaseViewHolder holder, int position) {
         ((NewsViewHolder)holder).tvTitle.setText(datas.get(position)
                 .getTitle());
         ((NewsViewHolder)holder).tvTime.setText(datas.get(position)
