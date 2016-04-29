@@ -15,62 +15,59 @@ import telanx.cooee.recyclerviewsample.entity.News;
 /**
  * Created by qq on 2016/4/16.
  */
-public class PartRefreshAdapter extends BaseAdapter<News, PartRefreshAdapter.NewsViewHolder>
-{
+public class PartRefreshAdapter extends BaseAdapter<News> {
 
     public static final int REFRESH_INTERVAL = 1;
 
     public PartRefreshAdapter(Context context,
-                              List<News> datas)
-    {
+                              List<News> datas) {
         super(context, datas);
     }
 
-
     @Override
-    protected void bindData(NewsViewHolder holder,
-                            int position,
-                            List<Object> payLoads)
-    {
-        if (payLoads == null || payLoads.size() == 0)
-        {
-            holder.tvTitle.setText(getDatas().get(position)
-                                             .getTitle());
-            holder.tvTime.setText(getDatas().get(position)
-                                            .getTime());
-            return;
-        }
-        Integer payload = (Integer) payLoads.get(0);
-        int color;
-        if (payload % 2 == 0)
-        {
-            color = Color.GREEN;
-        }
-        else
-        {
-            color = Color.GRAY;
-        }
-        holder.tvTime.setTextColor(color);
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        ((NewsViewHolder)holder).tvTitle.setText(datas.get(position)
+                .getTitle());
+        ((NewsViewHolder)holder).tvTime.setText(datas.get(position)
+                .getTime());
     }
 
     @Override
-    public NewsViewHolder onCreateViewHolder(ViewGroup parent,
-                                             int viewType)
-    {
+    protected int getCount() {
+        return datas != null ? datas.size() : 0;
+    }
+
+    @Override
+    protected int getViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    protected void refreshItem(BaseViewHolder holder, int position, List<Object> payloads) {
+        Integer payload = (Integer) payloads.get(0);
+        int color;
+        if (payload % 2 == 0) {
+            color = Color.GREEN;
+        } else {
+            color = Color.GRAY;
+        }
+        ((NewsViewHolder) holder).tvTime.setTextColor(color);
+    }
+
+    @Override
+    protected BaseViewHolder createHolder(ViewGroup parent, int viewType, LayoutInflater inflater) {
         //避免表项多一层嵌套
         View itemView = LayoutInflater.from(context)
-                                      .inflate(R.layout.news_item, null);
+                .inflate(R.layout.news_item, null);
         return new NewsViewHolder(itemView);
     }
 
-    public class NewsViewHolder extends BaseAdapter.BaseViewHolder
-    {
+    public class NewsViewHolder extends BaseViewHolder {
 
         public TextView tvTitle;
         public TextView tvTime;
 
-        public NewsViewHolder(View itemView)
-        {
+        public NewsViewHolder(View itemView) {
             super(itemView);
             tvTime = (TextView) itemView.findViewById(R.id.tvNewsTime);
             tvTitle = (TextView) itemView.findViewById(R.id.tvNewsTitle);

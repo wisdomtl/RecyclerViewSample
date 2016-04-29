@@ -26,13 +26,17 @@ public class SimpleAdapter extends RecyclerView.Adapter<StringViewHolder>
         this.datas = datas ;
     }
 
+    public SimpleAdapter(Context context){
+        this.context = context ;
+    }
+
     @Override
     public StringViewHolder onCreateViewHolder(ViewGroup viewGroup,
                                                int i)
     {
         //避免表项多一层嵌套
         View itemView = LayoutInflater.from(context)
-                                      .inflate(R.layout.string_item, null);
+                                      .inflate(R.layout.string_item, viewGroup , false);
         return new StringViewHolder(itemView);
     }
 
@@ -48,4 +52,5 @@ public class SimpleAdapter extends RecyclerView.Adapter<StringViewHolder>
     {
         return datas != null ?datas.size() : 0;
     }
+
 }

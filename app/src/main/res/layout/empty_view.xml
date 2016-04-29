@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--RecyclerView列表表项-->
 <TextView
-    android:id="@+id/tv_StringItem"
+    android:id="@+id/tvEmptyView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:gravity="center"
+    android:layout_gravity="center"
     android:background="?attr/selectableItemBackground"
-    android:theme="@style/CustomRippleColor"/>
+    android:text="加载中..."
+    android:textSize="30sp"
+    android:layout_margin="100dp"
+    android:textColor="#ff0f0f"/>
