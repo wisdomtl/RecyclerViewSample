@@ -1,5 +1,6 @@
 package telanx.cooee.recyclerviewsample;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,13 +18,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import telanx.cooee.recyclerviewsample.adapter.AlphabetAdapter;
-import telanx.cooee.recyclerviewsample.adapter.BaseAdapter;
+import telanx.cooee.recyclerviewsample.adapter.BaseRecyclerViewAdapter;
 import telanx.cooee.recyclerviewsample.adapter.PartRefreshAdapter;
 import telanx.cooee.recyclerviewsample.adapter.SimpleAdapter;
 import telanx.cooee.recyclerviewsample.entity.News;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     private static final int MESSAGE_REFRESH_TIME = 1;
     private ArrayList<String> datas;
     private List<News> newsList;
@@ -158,25 +159,25 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void setAdapter() {
             AlphabetAdapter adapter = new AlphabetAdapter(MainActivity.this, datas);
-            adapter.setOnItemClickListener(new AlphabetClickListener());
+//            adapter.setOnItemClickListener(new AlphabetClickListener());
             recyclerView.setAdapter(adapter);
         }
 
-        private class AlphabetClickListener implements BaseAdapter.OnItemClickListener<String> {
-
-            @Override
-            public void onItemClick(String data) {
-                Toast.makeText(MainActivity.this, "click " + data, Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onItemLongClick(int position,
-                                        BaseAdapter adapter) {
-                //删除长按表项并触发动画
-                adapter.removeData(position);
-            }
-        }
+//        private class AlphabetClickListener implements BaseRecyclerViewAdapter.OnItemClickListener<String> {
+//
+//            @Override
+//            public void onItemClick(String data) {
+//                Toast.makeText(MainActivity.this, "click " + data, Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//
+//            @Override
+//            public void onItemLongClick(int position,
+//                                        BaseRecyclerViewAdapter adapter) {
+//                //删除长按表项并触发动画
+//                adapter.removeData(position);
+//            }
+//        }
     }
 
     /**
@@ -191,14 +192,14 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         void setAdapter() {
-            BaseAdapter adapter = new AlphabetAdapter(MainActivity.this, datas);
+            BaseRecyclerViewAdapter adapter = new AlphabetAdapter(MainActivity.this, datas);
             recyclerView.setAdapter(adapter);
         }
 
         @Override
         void setListeners() {
             recyclerView.addOnScrollListener(new OnScrollStateListener() {
-                private BaseAdapter adapter = (BaseAdapter) recyclerView.getAdapter();
+                private BaseRecyclerViewAdapter adapter = (BaseRecyclerViewAdapter) recyclerView.getAdapter();
 
                 @Override
                 void onBottom() {

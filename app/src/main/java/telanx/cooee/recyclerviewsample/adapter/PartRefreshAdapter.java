@@ -13,9 +13,9 @@ import telanx.cooee.recyclerviewsample.R;
 import telanx.cooee.recyclerviewsample.entity.News;
 
 /**
- * Created by qq on 2016/4/16.
+ * Created by Taylor on 2016/4/16.
  */
-public class PartRefreshAdapter extends BaseAdapter<News> {
+public class PartRefreshAdapter extends BaseRecyclerViewAdapter<News> {
 
     public static final int REFRESH_INTERVAL = 1;
 
@@ -24,19 +24,11 @@ public class PartRefreshAdapter extends BaseAdapter<News> {
         super(context, datas);
     }
 
-//    @Override
-//    public void onBindViewHolder(BaseViewHolder holder, int position) {
-//        ((NewsViewHolder)holder).tvTitle.setText(datas.get(position)
-//                .getTitle());
-//        ((NewsViewHolder)holder).tvTime.setText(datas.get(position)
-//                .getTime());
-//    }
-
     @Override
     protected void bindHolder(BaseViewHolder holder, int position) {
-        ((NewsViewHolder)holder).tvTitle.setText(datas.get(position)
+        ((NewsViewHolder) holder).tvTitle.setText(datas.get(position)
                 .getTitle());
-        ((NewsViewHolder)holder).tvTime.setText(datas.get(position)
+        ((NewsViewHolder) holder).tvTime.setText(datas.get(position)
                 .getTime());
     }
 

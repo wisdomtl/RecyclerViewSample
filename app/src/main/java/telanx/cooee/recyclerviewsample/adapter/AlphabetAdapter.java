@@ -13,7 +13,8 @@ import telanx.cooee.recyclerviewsample.R;
 /**
  * BaseAdapter的一种实现
  */
-public class AlphabetAdapter extends BaseAdapter<String> {
+public class AlphabetAdapter extends BaseRecyclerViewAdapter<String> {
+
     private static final int TYPE_ALPHABET = 1;
 
     public AlphabetAdapter(Context context,
@@ -21,15 +22,12 @@ public class AlphabetAdapter extends BaseAdapter<String> {
         super(context, datas);
     }
 
-
     public AlphabetAdapter(Context context) {
         super(context);
     }
 
-
     @Override
     protected void refreshItem(BaseViewHolder holder, int position, List<Object> payloads) {
-        ((StringViewHolder) holder).tvAlphabet.setText(datas.get(position));
     }
 
     @Override
