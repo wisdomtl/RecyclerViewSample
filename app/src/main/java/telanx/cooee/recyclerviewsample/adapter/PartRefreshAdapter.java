@@ -56,7 +56,7 @@ public class PartRefreshAdapter extends BaseRecyclerViewAdapter<News> {
 
     @Override
     protected BaseViewHolder createHolder(ViewGroup parent, int viewType, LayoutInflater inflater) {
-        //避免表项多一层嵌套
+        //avoid nesting layout
         View itemView = LayoutInflater.from(context)
                 .inflate(R.layout.news_item, null);
         return new NewsViewHolder(itemView);

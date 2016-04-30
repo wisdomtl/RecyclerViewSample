@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +42,7 @@ public class MainActivity extends Activity {
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv);
 
-        /**RecyclerView用法1:最简单的用法*/
+        /**RecyclerView usage1:the most simplest way to build RecyclerView*/
 //        InitSimpleRecyclerView recyclerViewSample1 = new InitSimpleRecyclerView(recyclerView);
 //        recyclerViewSample1.setAdapter();
 //        recyclerViewSample1.setLayoutManager();
@@ -52,7 +50,7 @@ public class MainActivity extends Activity {
 //        itemDecorations.add(new Line(this)) ;
 //        recyclerViewSample1.drawDecoration(itemDecorations);
 
-        /**RecyclerView用法2:为表项设置监听器*/
+        /**RecyclerView usage2:set click listener to RecyclerView*/
 //        InitRecyclerViewWithItemClickListener recyclerViewSample2 = new InitRecyclerViewWithItemClickListener(recyclerView);
 //        recyclerViewSample2.setAdapter();
 //        recyclerViewSample2.setLayoutManager();
@@ -61,7 +59,7 @@ public class MainActivity extends Activity {
 //                                                   .setMarginRight(10));
 //        recyclerViewSample2.drawDecoration(itemDecorations);
 
-        /**RecyclerView用法3:监听RecyclerView滚动状态并设置滚动监听*/
+        /**RecyclerView usage3:set scroll listener to RecyclerView*/
 //        InitRecyclerViewWByScrollListener recyclerViewSample3 = new InitRecyclerViewWByScrollListener(recyclerView);
 //        recyclerViewSample3.setAdapter();
 //        recyclerViewSample3.setLayoutManager();
@@ -71,12 +69,12 @@ public class MainActivity extends Activity {
 //        recyclerViewSample3.drawDecoration(itemDecorations);
 //        recyclerViewSample3.setListeners();
 
-        /**RecyclerView用法4:局部刷新表项*/
+        /**RecyclerView usage4:refresh RecyclerView's item partially*/
 //        InitRecyclerViewWithPartRefresh recyclerViewSample4 = new InitRecyclerViewWithPartRefresh(recyclerView);
 //        recyclerViewSample4.setAdapter();
 //        recyclerViewSample4.setLayoutManager();
 
-        /**RecyclerView用法5:为RecyclerView设置empty view*/
+        /**RecyclerView usage5:add empty view to RecyclerView*/
         InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
         recyclerViewSample5.setLayoutManager();
         recyclerViewSample5.setAdapter();
@@ -99,12 +97,12 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * 抽象出使用RecyclerView要做的几件事情
-     * 1.设置LayoutManager(必选)
-     * 2.设置适配器(必选)
-     * 3.设置装饰器(可选)
-     * 4.设置动画(可选)
-     * 5.设置监听器(可选)
+     * abstract the things you should do when building RecyclerView
+     * 1.set LayoutManager(required)
+     * 2.set Adapter(required)
+     * 3.set Decoration(optional)
+     * 4.set Animation(optional)
+     * 5.set listener(optional)
      */
     public abstract class InitRecyclerView {
         protected RecyclerView recyclerView;
@@ -140,7 +138,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * RecyclerView用法1:最简单的用法
+     * RecyclerView usage1:the most simplest way to build RecyclerView
      */
     public class InitSimpleRecyclerView extends InitRecyclerView {
         public InitSimpleRecyclerView(RecyclerView recyclerView) {
@@ -149,7 +147,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * RecyclerView用法2:为表项设置监听器
+     * RecyclerView usage2:set click listener to RecyclerView
      */
     public class InitRecyclerViewWithItemClickListener extends InitRecyclerView {
         public InitRecyclerViewWithItemClickListener(RecyclerView recyclerView) {
@@ -181,7 +179,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * RecyclerView用法3:为RecyclerView添加滚动监听
+     * RecyclerView usage3:set scroll listener to RecyclerView
      */
     private class InitRecyclerViewWByScrollListener extends InitRecyclerView {
 
@@ -235,35 +233,35 @@ public class MainActivity extends Activity {
         }
 
         /**
-         * 滚动状态监听器(可监听滚动到开头和结尾,仅适用于LinearLayoutManager)
+         * the listener which listener the scrolling state of RecyclerView(limited to LinearLayoutManager)
          */
         private abstract class OnScrollStateListener extends RecyclerView.OnScrollListener {
             /**
-             * 是否正在向左滚动
+             * whether RecyclerView is scrolling from right to left
              */
             private boolean scrollingLeft;
             /**
-             * 是否正在向下滚动
+             * whether RecyclerView is scrolling from down to up
              */
-            private boolean scrollingDown;
+            private boolean scrollingUp;
             /**
-             * 是否正在向右滚动
+             * whether RecyclerView is scrolling from left to right
              */
             private boolean scrollingRight;
             /**
-             * 是否正在向上滚动
+             * whether RecyclerView is scrolling from down to up
              */
-            private boolean scrollingUp;
+            private boolean scrollingDown;
 
             @Override
             public void onScrolled(RecyclerView recyclerView,
                                    int dx,
                                    int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                //记忆滚动方向
+                //record scrolling direction
                 scrollingLeft = (dx > 0);
-                scrollingDown = (dy > 0);
-                scrollingUp = (dy < 0);
+                scrollingUp = (dy > 0);
+                scrollingDown = (dy < 0);
                 scrollingRight = (dx < 0);
             }
 
@@ -271,16 +269,16 @@ public class MainActivity extends Activity {
             public void onScrollStateChanged(RecyclerView recyclerView,
                                              int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                //当滚动停止后 检测滚动位置
+                //detect scrolling position when RecyclerView stop scrolling
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int firstItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
                     int lastItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
                     int totalItemNum = layoutManager.getItemCount();
-                    if (scrollingDown && lastItemPosition == totalItemNum - 1) {
+                    if (scrollingUp && lastItemPosition == totalItemNum - 1) {
                         onBottom();
                     }
-                    if (scrollingUp && firstItemPosition == 0) {
+                    if (scrollingDown && firstItemPosition == 0) {
                         onTop();
                     }
                     if (scrollingRight && firstItemPosition == 0) {
@@ -311,7 +309,7 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * RecyclerView用法4:局部刷新RecyclerView表现
+     * RecyclerView usage4:refresh RecyclerView's item partially
      */
     private class InitRecyclerViewWithPartRefresh extends InitRecyclerView {
         private Handler refreshHandler = new RefreshHandler();
@@ -359,6 +357,9 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     * RecyclerView usage5:add empty view to RecyclerView
+     */
     private class InitRecyclerViewByEmptyView extends InitRecyclerView {
 
         private AlphabetAdapter adapter;
