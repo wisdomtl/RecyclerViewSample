@@ -15,6 +15,10 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
 
     public static final int TYPE_EMPTY_VIEW = -1;
     public static final int TYPE_CONTENT = -2;
+    public static final int TYPE_FOOTER = -3;
+    private static final int TYPE_HEADER = -4;
+    protected final int FOOTER_COUNT = 1;
+    protected final int HEADER_COUNT = 1;
 
     protected Context context;
     /**
@@ -25,6 +29,14 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
      * layout resource for empty view
      */
     private int emptyViewLayout;
+    /**
+     * layout resource for footer
+     */
+    private int footerLayout;
+    /**
+     * layout resource for header
+     */
+    private int headerLayout;
     /**
      * current view type (empty view or content)
      */
@@ -64,6 +76,15 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         this.emptyViewLayout = emptyViewLayout;
     }
 
+
+    public void setFooterLayout(int footerLayout) {
+        this.footerLayout = footerLayout;
+    }
+
+    public void setHeaderLayout(int headerLayout) {
+        this.headerLayout = headerLayout;
+    }
+
     /**
      * add data to specified position
      *
@@ -100,9 +121,11 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         int viewType = getItemViewType(position);
         switch (viewType) {
             case TYPE_EMPTY_VIEW:
+            case TYPE_FOOTER:
+            case TYPE_HEADER:
                 break;
             default:
-                bindHolder(holder , position);
+                bindHolder(holder, position);
                 break;
         }
     }
@@ -115,6 +138,14 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         switch (viewType) {
             case TYPE_EMPTY_VIEW:
                 itemView = layoutInflater.inflate(emptyViewLayout, parent, false);
+                viewHolder = new BaseViewHolder(itemView);
+                break;
+            case TYPE_HEADER:
+                itemView = layoutInflater.inflate(headerLayout, parent, false);
+                viewHolder = new BaseViewHolder(itemView);
+                break;
+            case TYPE_FOOTER:
+                itemView = layoutInflater.inflate(footerLayout, parent, false);
                 viewHolder = new BaseViewHolder(itemView);
                 break;
             default:
@@ -137,11 +168,20 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         if (datas == null || datas.size() == 0) {
             return TYPE_EMPTY_VIEW;
         } else {
-            return getViewType(position);
+            if (position == datas.size()) {
+                return TYPE_FOOTER;
+            }
+//            else if (position == 0) {
+//                return TYPE_HEADER;
+//            }
+            else {
+                return getViewType(position);
+
+            }
         }
     }
 
-    protected abstract void bindHolder(BaseViewHolder holder, int position) ;
+    protected abstract void bindHolder(BaseViewHolder holder, int position);
 
     protected abstract int getCount();
 

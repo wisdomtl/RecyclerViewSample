@@ -380,6 +380,7 @@ public class MainActivity extends Activity {
             adapter.setEmptyViewLayout(R.layout.empty_view);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
+            adapter.setFooterLayout(R.layout.footer);
         }
 
         public void addDataDelay(int delay) {

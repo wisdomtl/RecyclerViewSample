@@ -55,7 +55,7 @@ public class AlphabetAdapter extends BaseRecyclerViewAdapter<String> {
 
     @Override
     protected int getCount() {
-        return datas != null ? datas.size() : 0;
+        return datas != null ? datas.size() + FOOTER_COUNT : 0;
     }
 
     @Override
