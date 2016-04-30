@@ -13,16 +13,16 @@ import telanx.cooee.recyclerviewsample.R;
 /**
  * BaseAdapter的一种实现
  */
-public class AlphabetAdapter extends BaseRecyclerViewAdapter<String> {
+public class FooterAdapter extends BaseRecyclerViewAdapter<String> {
 
     private static final int TYPE_ALPHABET = 1;
 
-    public AlphabetAdapter(Context context,
-                           List<String> datas) {
+    public FooterAdapter(Context context,
+                         List<String> datas) {
         super(context, datas);
     }
 
-    public AlphabetAdapter(Context context) {
+    public FooterAdapter(Context context) {
         super(context);
     }
 

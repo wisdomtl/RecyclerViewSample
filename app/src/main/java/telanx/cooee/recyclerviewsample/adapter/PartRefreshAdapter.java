@@ -10,17 +10,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import telanx.cooee.recyclerviewsample.R;
-import telanx.cooee.recyclerviewsample.entity.News;
+import telanx.cooee.recyclerviewsample.entity.ItemData;
 
 /**
  * Created by Taylor on 2016/4/16.
  */
-public class PartRefreshAdapter extends BaseRecyclerViewAdapter<News> {
+public class PartRefreshAdapter extends BaseRecyclerViewAdapter<ItemData> {
 
     public static final int REFRESH_INTERVAL = 1;
 
     public PartRefreshAdapter(Context context,
-                              List<News> datas) {
+                              List<ItemData> datas) {
         super(context, datas);
     }
 
@@ -73,5 +73,4 @@ public class PartRefreshAdapter extends BaseRecyclerViewAdapter<News> {
             tvTitle = (TextView) itemView.findViewById(R.id.tvNewsTitle);
         }
     }
-
 }

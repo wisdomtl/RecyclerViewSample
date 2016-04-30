@@ -117,7 +117,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public final void onBindViewHolder(BaseViewHolder holder, int position) {
         int viewType = getItemViewType(position);
         switch (viewType) {
             case TYPE_EMPTY_VIEW:
@@ -181,6 +181,8 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         }
     }
 
+    protected abstract BaseViewHolder createHolder(ViewGroup parent, int viewType, LayoutInflater inflater);
+
     protected abstract void bindHolder(BaseViewHolder holder, int position);
 
     protected abstract int getCount();
@@ -188,8 +190,6 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     protected abstract int getViewType(int position);
 
     protected abstract void refreshItem(BaseViewHolder holder, int position, List<Object> payloads);
-
-    protected abstract BaseViewHolder createHolder(ViewGroup parent, int viewType, LayoutInflater inflater);
 
 
     private class DataObserver extends RecyclerView.AdapterDataObserver {

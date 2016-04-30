@@ -1,6 +1,7 @@
 package telanx.cooee.recyclerviewsample;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,17 +16,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import telanx.cooee.recyclerviewsample.adapter.AlphabetAdapter;
+import telanx.cooee.recyclerviewsample.adapter.FooterAdapter;
 import telanx.cooee.recyclerviewsample.adapter.BaseRecyclerViewAdapter;
 import telanx.cooee.recyclerviewsample.adapter.PartRefreshAdapter;
 import telanx.cooee.recyclerviewsample.adapter.SimpleAdapter;
-import telanx.cooee.recyclerviewsample.entity.News;
+import telanx.cooee.recyclerviewsample.adapter.VariousItemTypeAdapter;
+import telanx.cooee.recyclerviewsample.entity.ItemData;
+import telanx.cooee.recyclerviewsample.itemdecoration.Line;
 
 
 public class MainActivity extends Activity {
     private static final int MESSAGE_REFRESH_TIME = 1;
     private ArrayList<String> datas;
-    private List<News> newsList;
+    private List<ItemData> itemDataList;
     private ArrayList<RecyclerView.ItemDecoration> itemDecorations = new ArrayList<>();
     private ScheduledExecutorService executor;
 
@@ -75,10 +78,19 @@ public class MainActivity extends Activity {
 //        recyclerViewSample4.setLayoutManager();
 
         /**RecyclerView usage5:add empty view to RecyclerView*/
-        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
-        recyclerViewSample5.setLayoutManager();
-        recyclerViewSample5.setAdapter();
-        recyclerViewSample5.addDataDelay(2000);
+//        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
+//        recyclerViewSample5.setLayoutManager();
+//        recyclerViewSample5.setAdapter();
+//        recyclerViewSample5.addDataDelay(2000);
+
+        /**RecyclerView usage6:add various item type to RecyclerView*/
+        InitRecyclerViewByVariousItemType recyclerViewSample6 = new InitRecyclerViewByVariousItemType(recyclerView);
+        recyclerViewSample6.setLayoutManager();
+        recyclerViewSample6.setAdapter();
+        //用Paint绘制表项分割线
+        itemDecorations.add(new Line(1, Color.GRAY).setMarginLeft(10)
+                .setMarginRight(10));
+        recyclerViewSample6.drawDecoration(itemDecorations);
     }
 
     protected void initData() {
@@ -87,12 +99,13 @@ public class MainActivity extends Activity {
             datas.add("" + (char) i);
         }
 
-        newsList = new ArrayList<>();
+        itemDataList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            News news = new News();
-            news.setTime(i + "点");
-            news.setTitle("新闻" + i);
-            newsList.add(news);
+            ItemData itemData = new ItemData();
+            itemData.setTime(i + "点");
+            itemData.setTitle("新闻" + i);
+            itemData.setLayoutType(i % 2 == 0 ? ItemData.LAYOUT_1 : ItemData.LAYOUT_2);
+            itemDataList.add(itemData);
         }
     }
 
@@ -156,7 +169,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void setAdapter() {
-            AlphabetAdapter adapter = new AlphabetAdapter(MainActivity.this, datas);
+            FooterAdapter adapter = new FooterAdapter(MainActivity.this, datas);
 //            adapter.setOnItemClickListener(new AlphabetClickListener());
             recyclerView.setAdapter(adapter);
         }
@@ -190,7 +203,7 @@ public class MainActivity extends Activity {
 
         @Override
         void setAdapter() {
-            BaseRecyclerViewAdapter adapter = new AlphabetAdapter(MainActivity.this, datas);
+            BaseRecyclerViewAdapter adapter = new FooterAdapter(MainActivity.this, datas);
             recyclerView.setAdapter(adapter);
         }
 
@@ -323,7 +336,7 @@ public class MainActivity extends Activity {
 
         @Override
         void setAdapter() {
-            adapter = new PartRefreshAdapter(MainActivity.this, newsList);
+            adapter = new PartRefreshAdapter(MainActivity.this, itemDataList);
             recyclerView.setAdapter(adapter);
         }
 
@@ -334,7 +347,7 @@ public class MainActivity extends Activity {
                 switch (msg.what) {
                     case MESSAGE_REFRESH_TIME:
                         Integer integer = msg.arg1;
-                        adapter.notifyItemRangeChanged(0, newsList.size() - 1, integer);
+                        adapter.notifyItemRangeChanged(0, itemDataList.size() - 1, integer);
                         break;
                     default:
                         break;
@@ -362,7 +375,7 @@ public class MainActivity extends Activity {
      */
     private class InitRecyclerViewByEmptyView extends InitRecyclerView {
 
-        private AlphabetAdapter adapter;
+        private FooterAdapter adapter;
 
         private Handler handler = new Handler() {
             @Override
@@ -376,13 +389,18 @@ public class MainActivity extends Activity {
 
         @Override
         void setAdapter() {
-            adapter = new AlphabetAdapter(MainActivity.this);
+            adapter = new FooterAdapter(MainActivity.this);
             adapter.setEmptyViewLayout(R.layout.empty_view);
             recyclerView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             adapter.setFooterLayout(R.layout.footer);
         }
 
+        /**
+         * simulate time-consuming data loading
+         *
+         * @param delay
+         */
         public void addDataDelay(int delay) {
             handler.postDelayed(new Runnable() {
                 @Override
@@ -390,6 +408,22 @@ public class MainActivity extends Activity {
                     adapter.setData(datas);
                 }
             }, delay);
+        }
+    }
+
+    /**
+     * RecyclerView usage6:add various item type to RecyclerView
+     */
+    private class InitRecyclerViewByVariousItemType extends InitRecyclerView {
+
+        public InitRecyclerViewByVariousItemType(RecyclerView recyclerView) {
+            super(recyclerView);
+        }
+
+        @Override
+        void setAdapter() {
+            VariousItemTypeAdapter adapter = new VariousItemTypeAdapter(MainActivity.this, itemDataList);
+            recyclerView.setAdapter(adapter);
         }
     }
 }
