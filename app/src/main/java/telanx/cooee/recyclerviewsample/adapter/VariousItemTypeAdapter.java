@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class VariousItemTypeAdapter extends BaseRecyclerViewAdapter<ItemData> {
                 ItemViewHolder2 viewHolder2 = (ItemViewHolder2) holder;
                 viewHolder2.tvTitle.setText(data.getTitle());
                 viewHolder2.tvTime.setText(data.getTime());
+                break;
+            case ItemData.LAYOUT_3:
+                ItemViewHolder3 viewHolder3 = (ItemViewHolder3) holder;
                 break;
             default:
                 break;
@@ -71,6 +75,10 @@ public class VariousItemTypeAdapter extends BaseRecyclerViewAdapter<ItemData> {
                 itemView = inflater.inflate(R.layout.item_layout2, parent, false);
                 viewHolder = new ItemViewHolder2(itemView);
                 break;
+            case ItemData.LAYOUT_3:
+                itemView = inflater.inflate(R.layout.item_full_screen_header, parent, false);
+                viewHolder = new ItemViewHolder3(itemView);
+                break;
             default:
                 viewHolder = null;
                 break;
@@ -97,6 +105,16 @@ public class VariousItemTypeAdapter extends BaseRecyclerViewAdapter<ItemData> {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title_layout);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+        }
+    }
+
+    private class ItemViewHolder3 extends BaseViewHolder {
+
+        private ImageView iv;
+
+        public ItemViewHolder3(View itemView) {
+            super(itemView);
+            iv = ((ImageView) itemView.findViewById(R.id.iv_full_screen_header));
         }
     }
 }

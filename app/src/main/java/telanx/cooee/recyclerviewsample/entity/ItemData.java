@@ -6,6 +6,7 @@ package telanx.cooee.recyclerviewsample.entity;
 public class ItemData {
     public static final int LAYOUT_1 = 1;
     public static final int LAYOUT_2 = 2;
+    public static final int LAYOUT_3 = 3;
 
     private String title;
     private String time;

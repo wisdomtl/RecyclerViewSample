@@ -100,6 +100,9 @@ public class MainActivity extends Activity {
         }
 
         itemDataList = new ArrayList<>();
+        ItemData fullScreenItem = new ItemData();
+        fullScreenItem.setLayoutType(ItemData.LAYOUT_3);
+        itemDataList.add(fullScreenItem);
         for (int i = 0; i < 20; i++) {
             ItemData itemData = new ItemData();
             itemData.setTime(i + "点");
