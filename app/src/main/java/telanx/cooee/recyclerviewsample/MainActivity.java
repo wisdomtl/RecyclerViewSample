@@ -78,19 +78,19 @@ public class MainActivity extends Activity {
 //        recyclerViewSample4.setLayoutManager();
 
         /**RecyclerView usage5:add empty view to RecyclerView*/
-//        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
-//        recyclerViewSample5.setLayoutManager();
-//        recyclerViewSample5.setAdapter();
-//        recyclerViewSample5.addDataDelay(2000);
+        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
+        recyclerViewSample5.setLayoutManager();
+        recyclerViewSample5.setAdapter();
+        recyclerViewSample5.addDataDelay(2000);
 
         /**RecyclerView usage6:add various item type to RecyclerView*/
-        InitRecyclerViewByVariousItemType recyclerViewSample6 = new InitRecyclerViewByVariousItemType(recyclerView);
-        recyclerViewSample6.setLayoutManager();
-        recyclerViewSample6.setAdapter();
-        //用Paint绘制表项分割线
-        itemDecorations.add(new Line(1, Color.GRAY).setMarginLeft(10)
-                .setMarginRight(10));
-        recyclerViewSample6.drawDecoration(itemDecorations);
+//        InitRecyclerViewByVariousItemType recyclerViewSample6 = new InitRecyclerViewByVariousItemType(recyclerView);
+//        recyclerViewSample6.setLayoutManager();
+//        recyclerViewSample6.setAdapter();
+//        //用Paint绘制表项分割线
+//        itemDecorations.add(new Line(1, Color.GRAY).setMarginLeft(10)
+//                .setMarginRight(10));
+//        recyclerViewSample6.drawDecoration(itemDecorations);
     }
 
     protected void initData() {
