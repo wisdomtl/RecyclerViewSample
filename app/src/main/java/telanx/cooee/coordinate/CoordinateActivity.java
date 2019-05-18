@@ -26,6 +26,7 @@ public class CoordinateActivity extends Activity implements RecyclerView.OnItemT
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coordinate_layout);
         initList();
+        Log.e("ttaylor", "MainActivity.onCreate()" + "  ==="+(0%3));
     }
 
     protected void initData() {

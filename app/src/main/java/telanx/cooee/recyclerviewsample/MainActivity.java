@@ -1,13 +1,14 @@
 package telanx.cooee.recyclerviewsample;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ import telanx.cooee.recyclerviewsample.adapter.PartRefreshAdapter;
 import telanx.cooee.recyclerviewsample.adapter.SimpleAdapter;
 import telanx.cooee.recyclerviewsample.adapter.VariousItemTypeAdapter;
 import telanx.cooee.recyclerviewsample.entity.ItemData;
-import telanx.cooee.recyclerviewsample.itemdecoration.Line;
+import telanx.cooee.recyclerviewsample.grid.CofferItemDecoration;
+import telanx.cooee.recyclerviewsample.grid.GridAdapter;
 
 
 public class MainActivity extends Activity {
@@ -37,6 +39,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+        Log.e("ttaylor", "MainActivity.onCreate()" + "  ==="+(0%3));
     }
 
     private void init() {
@@ -78,10 +81,10 @@ public class MainActivity extends Activity {
 //        recyclerViewSample4.setLayoutManager();
 
         /**RecyclerView usage5:add empty view to RecyclerView*/
-        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
-        recyclerViewSample5.setLayoutManager();
-        recyclerViewSample5.setAdapter();
-        recyclerViewSample5.addDataDelay(2000);
+//        InitRecyclerViewByEmptyView recyclerViewSample5 = new InitRecyclerViewByEmptyView(recyclerView);
+//        recyclerViewSample5.setLayoutManager();
+//        recyclerViewSample5.setAdapter();
+//        recyclerViewSample5.addDataDelay(2000);
 
         /**RecyclerView usage6:add various item type to RecyclerView*/
 //        InitRecyclerViewByVariousItemType recyclerViewSample6 = new InitRecyclerViewByVariousItemType(recyclerView);
@@ -91,6 +94,19 @@ public class MainActivity extends Activity {
 //        itemDecorations.add(new Line(1, Color.GRAY).setMarginLeft(10)
 //                .setMarginRight(10));
 //        recyclerViewSample6.drawDecoration(itemDecorations);
+
+        List<String> datas = new ArrayList<>();
+        datas.add("dfdsfs");
+        datas.add("dfdsfs");
+        datas.add("dfdsfs");
+        datas.add("dfdsfs");
+        datas.add("dfdsfs");
+        datas.add("dfdsfs");
+        GridAdapter gridAdapter = new GridAdapter(datas);
+        recyclerView.setAdapter(gridAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3,LinearLayoutManager.VERTICAL,false));
+        recyclerView.addItemDecoration(new CofferItemDecoration(20,30,3));
+        gridAdapter.notifyDataSetChanged();
     }
 
     protected void initData() {
